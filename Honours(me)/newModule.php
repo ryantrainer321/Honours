@@ -31,13 +31,38 @@ include("auth.php");
 require('db.php');
 include("auth.php");
 
-if (isset($_REQUEST['moduleName'])){
+if (isset($_POST['moduleName'])){
     // removes backslashes
-    $moduleName = stripslashes($_REQUEST['moduleName']);
+    $moduleName = stripslashes($_POST['moduleName']);
     //escapes special characters in a string
     $moduleName = mysqli_real_escape_string($con,$moduleName);
-    $moduleCode = stripslashes($_REQUEST['moduleCode']);
+    $moduleCode = stripslashes($_POST['moduleCode']);
     $moduleCode = mysqli_real_escape_string($con,$moduleCode);
+    $tableName  = $moduleCode;
+    echo $tableName;
+
+    $sql = "CREATE TABLE {$tableName}
+(
+        'student_id' VARCHAR(30)  PRIMARY KEY, 
+        'student_name' VARCHAR(30),
+        'classType' VARCHAR(30)
+        )";
+
+    if(mysqli_query($con, $sql)){
+        echo "Table created successfully.";
+    } else{
+        echo "ERROR: Could not able to execute $sql. " . mysqli_error($con);
+    }
+
+
+
+
+
+
+
+
+
+
 
     $query = "INSERT into `modules` (module_Name, Code)
 VALUES ('$moduleName','$moduleCode')";
@@ -55,7 +80,6 @@ VALUES ('$moduleName','$moduleCode')";
         <form name="registration" action="" method="post">
             <input type="text" name="moduleName" placeholder="Name of module" required />
             <input type="text" name="moduleCode" placeholder="Module code" required />
-            <input type="text" name="moduleCoordinator" placeholder="Name of the module Coordinator" required />
             <input type="submit" name="submit" value="Register" />
         </form>
     </div>

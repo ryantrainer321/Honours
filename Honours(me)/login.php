@@ -4,8 +4,11 @@
     <meta charset="utf-8">
     <title>Login</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
+
+
 <?php
 require('db.php');
 session_start();
@@ -20,7 +23,7 @@ if (isset($_POST['username'])){
     //Checking is user existing in the database or not
     $query = "SELECT * FROM `users` WHERE username='$username'
 and password='".md5($password)."'";
-    $result = mysqli_query($con,$query) or die(mysql_error());
+    $result = mysqli_query($con,$query) or die(mysqli_error());
     $rows = mysqli_num_rows($result);
     if($rows==1){
         $_SESSION['username'] = $username;

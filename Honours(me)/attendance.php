@@ -5,17 +5,36 @@ include("auth.php");
 <!DOCTYPE html>
 
 <html>
-<head>
-    <title>Select Class</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+<head><meta charset="utf-8">
+    <title>Take attendance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://demo.itsolutionstuff.com/plugin/bootstrap-3.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="dashboard.php"> Home </a></li>
+            <li class="active"><a href="attendance.php"> Take attendance</a></li>
+            <li ><a href="atRiskStudents.php"> Show at risk students</a></li>
+            <li ><a href="createRule.php"> Show at risk students</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container text-center">
+    <h1>Take attendance</h1>
+</div>
 
 <div class="container">
     <div class="panel panel-default">
-        <div class="panel-heading">Select Class</div>
         <div class="panel-body">
             <div class="form-group">
                 <label for="title">Select Module:</label>
@@ -38,11 +57,15 @@ include("auth.php");
 
             <div class="form-group">
                 <label for="title">Select Class:</label>
-                <select name="class" class="form-control" style="width:350px">
+                <select name="class" class="form-control" >
+                    <option value="">--- Module selection required ---</option>
                 </select>
             </div>
-                <input type="submit" name="submit" value="Mark Attendance" />
+                <br/>
+
+                <input type="submit" name="submit" class=" btn btn-success" value="Show class list" />
             </form>
+
             <form action="submitAttendance.php" method="post">
                 <?php
                 require('db.php');
@@ -50,11 +73,16 @@ include("auth.php");
                 $query = mysqli_query($con,"select * from class_enrolment where Class_id = '$sel_year ' ");
 
                 ?>
-                <table border="3">
+                <br/>
+
+                <div class="container">
+                    <table class="table table-hover">
                     <tbody>
                     <tr>
                         <td></td>
+                        <td>Student Count</td>
                         <td>Student Code</td>
+                        <td>Module Code</td>
                         <td>Class Code</td>
                         <td>Attendance</td>
                         <td></td>
@@ -63,30 +91,34 @@ include("auth.php");
 
 
                     <?php
-                    $counter = 0;
+                    $count = 0;
                     while ($row = mysqli_fetch_array($query)) {
 
-                        $sID = $row['Student_id'];
-                        $cID = $row['Class_id'];
+                        $sID = $row['student_id'];
+                        $cID = $row['class_id'];
+                        $mID = $row['module_id'];
 
-                        $counter++;
+                        $count++;
                         echo "<tr>";
                         echo "<td></td>";
-                        echo "<td><input type='hidden' name='studentID[$counter]' value ='$sID' /> " .$row['Student_id']."</td>";
-                        echo "<td><input type='hidden' name='classID[$counter]' value = '$cID' />" .$row['Class_id']."</td>";
-                        echo "<td><label for='present'><input type='radio' id='present' name='attendance_status[$counter]' value='1'> Present</label>";
-                        echo "<td><label for='absent'><input type='radio' id='absent' name='attendance_status[$counter]' value='0'> Absent</label>";
+                        echo "<td><input type='hidden' name='count[$count]' value = '$count' />".$count."</td>";
+                        echo "<td><input type='hidden' name='studentID[$count]' value ='$sID' /> " .$row['student_id']."</td>";
+                        echo "<td><input type='hidden' name='moduleID[$count]' value ='$mID' /> " .$row['student_id']."</td>";
+                        echo "<td><input type='hidden' name='classID[$count]' value = '$cID' />" .$row['class_id']."</td>";
+                        echo "<td><label for='present'><input type='radio' id='present' name='attendance_status[$count]' value='1'> Present</label>";
+                        echo "<td><label for='absent'><input type='radio' id='absent' name='attendance_status[$count]' value='0'> Absent</label>";
                         echo "</tr>";
                     }
                     ?>
                     </tbody>
                 </table>
 
-                <br/>
-                <input type="submit" name="submit" value="Mark Attendance" />
-                <p><a href="index.php">Home</a></p>
-            </form>
 
+                    <br/>
+                <input type="submit" name="submit" class=" btn btn-success" value="Mark Attendance" />
+
+            </form>
+        </div>
         </div>
     </div>
 </div>

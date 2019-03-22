@@ -32,7 +32,7 @@ include("auth.php");
     <h1>At risk students</h1>
 </div>
 
-<form method="post" action="atRiskStudents.php">
+<form method="post" action="createRule.php">
 
     <div class="form-group text-center">
         <label for="title">Select Module:</label>
@@ -43,32 +43,15 @@ include("auth.php");
             $sql = "select * from modules";
             $result = $mysqli->query($sql);
             while($row = $result->fetch_assoc()){
-                echo "<option value='".$row['Code']."'>".$row['module_Name']."</option>";
+                echo "<option value='".$row['module_Name']."'>".$row['Code']."</option>";
             }
             ?>
         </select>
-
-        <label for="title">Select how many sessions missed:</label>
-        <select name="rule" class="form-row" >
-            <option value="">--- Select Amount ---</option>
-            <option> 1 </option>
-            <option> 2 </option>
-            <option> 3 </option>
-            <option> 4 </option>
-            <option> 5 </option>
-            <option> 6 </option>
-            <option> 7 </option>
-            <option> 8 </option>
-            <option> 9 </option>
-            <option> 10 </option>
-            <option> 11 </option>
-            <option> 12 </option>
-        </select>
-
     </div>
+
     <div class = "text-center">
-    <button type="submit" class="btn btn-success">Show class list</button>
-        </div>
+        <button type="submit" class="btn btn-success">Show class list</button>
+    </div>
     <br/>
     </div>
 
@@ -76,55 +59,55 @@ include("auth.php");
 </form>
 
 
-        <form action="atRiskStudents.php" method="post">
+<form action="createRule.php" method="post">
+    <?php
+    require('db.php');
+    $sel_year= $_POST['module'];
+    $rule= $_POST['rule'];
+
+
+    $query = mysqli_query($con,"select * from classes where Module_code = '$sel_year '");
+
+
+
+    ?>
+    <div class="container">
+        <table class="table table-hover">
+            <tbody>
+            <tr>
+                <td>Student Count</td>
+                <td>Name</td>
+                <td>Date</td>
+                <td>Time</td>
+            </tr>
+
+
+
             <?php
-            require('db.php');
-            $sel_year= $_POST['module'];
-            $rule= $_POST['rule'];
+            $count = 0;
+            while ($row = mysqli_fetch_array($query)) {
 
-           // $success = mysqli_query($con, $rule);
-           $query = mysqli_query($con,"select * from at_risk_students where module = '$sel_year ' and number_of_classes_not_attended >= '$rule'");
+                $sID = $row['Name'];
+                $cID = $row['Date'];
+                $mID = $row['Time'];
 
-
+                $count++;
+                echo "<tr>";
+                echo "<td><input type='hidden' name='count[$count]' value = '$count' />".$count."</td>";
+                echo "<td><input type='hidden' name='studentID[$count]' value ='$sID' /> " .$row['Name']."</td>";
+                echo "<td><input type='hidden' name='moduleID[$count]' value ='$mID' /> " .$row['Date']."</td>";
+                echo "<td><input type='hidden' name='numberID[$count]' value = '$cID' />" .$row['Time']."</td>";
+                echo "<td><input type='button' name='showClasses' value = 'Show classes' data-toggle='modal' data-target='#classModal'></td>";
+                echo "<td><input type='button' name='sendMail' value = 'Send Mail' data-toggle='modal' data-target='#mailModal'></td>";
+                echo "</tr>";
+            }
 
             ?>
-            <div class="container">
-                <table class="table table-hover">
-                <tbody>
-                <tr>
-                    <td>Student Count</td>
-                    <td>Student Code</td>
-                    <td>Module Code</td>
-                    <td>Number of sessions missed</td>
-                </tr>
+            </tbody>
+        </table>
+    </div>
 
-
-
-                <?php
-                $count = 0;
-                while ($row = mysqli_fetch_array($query)) {
-
-                    $sID = $row['student_id'];
-                    $cID = $row['number_of_classes_not_attended'];
-                    $mID = $row['module'];
-
-                    $count++;
-                    echo "<tr>";
-                    echo "<td><input type='hidden' name='count[$count]' value = '$count' />".$count."</td>";
-                    echo "<td><input type='hidden' name='studentID[$count]' value ='$sID' /> " .$row['student_id']."</td>";
-                    echo "<td><input type='hidden' name='moduleID[$count]' value ='$mID' /> " .$row['module']."</td>";
-                    echo "<td><input type='hidden' name='numberID[$count]' value = '$cID' />" .$row['number_of_classes_not_attended']."</td>";
-                    echo "<td><input type='button' name='showClasses' value = 'Show classes' data-toggle='modal' data-target='#classModal'></td>";
-                    echo "<td><input type='button' name='sendMail' value = 'Send Mail' data-toggle='modal' data-target='#mailModal'></td>";
-                    echo "</tr>";
-                }
-
-                ?>
-                </tbody>
-            </table>
-            </div>
-
-        </form>
+</form>
 
 
 

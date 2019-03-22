@@ -1,0 +1,89 @@
+ <div class="container">
+                    <style type="text/css">
+                        #boxA, #boxB {
+                            float:left;padding:10px;margin:10px;-moz-user-select:none;
+                        }
+                        #boxA { background-color: #6633FF; width:75px; height:75px;  }
+                        #boxB { background-color: #FF6699; width:150px; height:500px; }
+                        #boxB { background-color: #ff0e1a; width:150px; height:500px; }
+                    </style>
+                    <script type="text/javascript">
+                        function dragStart(ev) {
+                            ev.dataTransfer.effectAllowed='move';
+                            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+                            ev.dataTransfer.setDragImage(ev.target,0,0);
+                            return true;
+                        }
+                        function dragEnter(ev) {
+                            event.preventDefault();
+                            return true;
+                        }
+                        function dragOver(ev) {
+                            return false;
+                        }
+                        function dragDrop(ev) {
+                            var src = ev.dataTransfer.getData("Text");
+                            ev.target.appendChild(document.getElementById(src));
+                            ev.stopPropagation();
+                            return false;
+                        }
+                    </script>
+
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 1</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 2</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 3</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 4</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 5</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 6</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 7</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 8</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 9</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 10</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 11</p>
+                    </div>
+                    <div id="boxA" draggable="true" ondragstart="return dragStart(event)">
+                        <p>class 11</p>
+                    </div>
+
+</div>
+</div>
+
+
+
+
+        <div id="boxB" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Week 1-4
+        </div>
+
+
+        <div id="boxB" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Week 4-8</div>
+
+
+
+
+        <div id="boxB" ondragenter="return dragEnter(event)" ondrop="return dragDrop(event)" ondragover="return dragOver(event)">Week 7-12</div>
+    </div>
+
+
+<link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
